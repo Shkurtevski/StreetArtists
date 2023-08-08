@@ -1,0 +1,60 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+@use "sass:math";
+
+.main-container {
+  .main-wrapper {
+    .banner {
+      width: 100%;
+      padding-top: 85px;
+      @extend %d-flex-center;
+      flex-direction: column;
+      img {
+        @extend %section;
+      }
+      .banner-wrapper {
+        font-family: var.$font-family-styled;
+        @extend %banner-setup;
+        .banner-content {
+          .square-one {
+            @extend %square-setup;
+            clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 42%);
+            background-color: var.$background-color-normal;
+            .square-one-inner {
+              display: flex;
+              flex-direction: column;
+              position: absolute;
+              top: 20%;
+              p {
+                font-size: var.$font-size-big;
+                color: var.$primary-color-default;
+              }
+              select {
+                width: 100px;
+                align-self: flex-end;
+                border: 1px solid var.$primary-color-default;
+                color: var.$primary-color-default;
+                background: none;
+                outline: none;
+                padding: 0.3rem;
+              }
+            }
+          }
+          a {
+            .square-two {
+              @extend %square-setup;
+              clip-path: polygon(0 0, 100% 58%, 100% 100%, 0 100%);
+              top: 29.7%;
+              background-color: var.$primary-color-default;
+              .square-two-inner {
+                p {
+                  @extend %square-p-setup;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

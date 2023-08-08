@@ -1,0 +1,37 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+@use "sass:math";
+
+h1,
+h2,
+h3 {
+  margin-bottom: math.div(var.$gutter-base, 2);
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.p-0 {
+  padding: 0;
+}
+
+/* /////////////////////////////////////////////
+----------> BUTTONS <----------
+*/////////////////////////////////////////////
+.btn-dark {
+  cursor: pointer;
+  background-color: var.$primary-color-default;
+  color: var.$background-color-light;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-weight: var.$font-weight-bold;
+  @include mix.mobile-l-styles {
+    padding: 0.5rem 1rem;
+    font-size: 12px;
+  }
+}

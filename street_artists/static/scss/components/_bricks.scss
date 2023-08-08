@@ -1,0 +1,27 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+@use "sass:math";
+  
+  .main-container {
+    .bricks-pattern {
+      @extend %bricks-pattern-setup;
+      padding-top: 80px;
+      .bricks-text {
+        @extend %d-flex-center;
+        width: 100%;
+        padding: 2rem 1rem;
+        @include mix.mobile-l-styles{
+          padding: 2.57rem 0.5rem;
+        }
+        p {
+          margin-right: 1.5rem;
+          font-size: var.$font-size-medium;
+          color: var.$primary-color-default;
+          @include mix.mobile-l-styles {
+            font-size: var.$font-size-small;
+            margin-right: 1rem;
+          }
+        }
+      }
+    }
+  }
