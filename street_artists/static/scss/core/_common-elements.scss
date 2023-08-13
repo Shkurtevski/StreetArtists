@@ -22,11 +22,9 @@ ul {
 
 /* /////////////////////////////////////////////
 ----------> BUTTONS <----------
-*/////////////////////////////////////////////
-.btn-dark {
+*/ ////////////////////////////////////////////
+.btn {
   cursor: pointer;
-  background-color: var.$primary-color-default;
-  color: var.$background-color-light;
   border: none;
   padding: 0.5rem 1.5rem;
   font-weight: var.$font-weight-bold;
@@ -34,4 +32,39 @@ ul {
     padding: 0.5rem 1rem;
     font-size: 12px;
   }
+}
+
+.btn-dark {
+  background-color: var.$primary-color-default;
+  color: var.$background-color-light;
+}
+
+.btn-light {
+  background-color: var.$background-color-light;
+  color: var.$primary-color-default;
+}
+
+.btn-white {
+  background-color: var.$background-color-white;
+  color: var.$text-color-default;
+}
+
+.btn-grey {
+  background-color: var.$text-color-white;
+  color: var.$text-color-white;
+}
+
+.btn-green {
+  background-color: var.$primary-color-green;
+  color: var.$background-color-light;
+}
+
+.btn-blue {
+  background-color: var.$primary-color-blue;
+  color: var.$text-color-white;
+}
+
+.btn-active-contrast {
+  background-color: var.$primary-color-contrast;
+  color: var.$background-color-light;
 }

@@ -1,0 +1,125 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+@use "sass:math";
+
+#artist {
+  min-height: 100vh;
+  background-color: var.$background-color-light;
+  font-family: var.$font-family-base;
+  .main-container {
+    padding-top: 80px;
+    .main-wrapper {
+      @extend %wrap;
+      @extend %section;
+      background-color: var.$background-color-normal;
+      .content-wrapper {
+        .left-right-wrapper {
+          @extend %d-flex-center;
+          .left-content,
+          .right-content {
+            width: 50%;
+            background-color: var.$primary-color-default;
+            color: var.$background-color-light;
+            text-align: center;
+            margin-bottom: 1rem;
+            padding: 1rem 0.2rem;
+            text-transform: capitalize;
+            &:not(:last-child) {
+              margin-right: 1rem;
+            }
+            p {
+              font-size: 1rem;
+              &:not(:last-child) {
+                padding-bottom: 0.5rem;
+              }
+            }
+            .items-sold,
+            .items-income {
+              font-size: var.$font-size-medium;
+            }
+          }
+        }
+        .bottom-content {
+          width: 100%;
+          background-color: var.$primary-color-contrast;
+          text-align: center;
+          color: var.$background-color-light;
+          padding: 1rem 0.2rem;
+          .item-auction-title {
+            text-transform: capitalize;
+            padding-bottom: 0.5rem;
+          }
+        }
+      }
+    }
+    .chart-content-wrapper {
+      .chart-content {
+        @extend %wrap;
+        @extend %section;
+        p {
+          padding-bottom: 1rem;
+          color: var.$primary-color-default;
+          font-size: 1.2rem;
+          width: 80%;
+          margin: 0 auto;
+          @include mix.tablet-styles {
+            width: 100%;
+          }
+        }
+        .chart-buttons-wrapper {
+          @extend %d-flex-space-between;
+          width: 80%;
+          margin: 0 auto;
+          @include mix.tablet-styles {
+            width: 100%;
+          }
+        }
+      }
+      .chart-container {
+        width: 80%;
+        margin: 0 auto;
+        #myChart {
+          width: 100% !important;
+          height: 450px !important;
+          @include mix.tablet-styles {
+            height: 100% !important;
+          }
+        }
+        @include mix.tablet-styles {
+          width: 100%;
+          height: 300px;
+        }
+      }
+    }
+  }
+}
+.nav-links {
+  position: fixed;
+  right: -100%;
+  top: 80px;
+  background-color: var.$primary-color-default;
+  width: 100%;
+  text-align: center;
+  transition: 0.3s;
+  font-family: var.$font-family-base;
+  font-weight: 300;
+  padding: 1rem 0;
+  ul {
+    li {
+      a {
+        font-size: var.$font-size-small;
+        color: var.$background-color-light;
+        cursor: pointer;
+      }
+      &:not(:last-child) {
+        padding-bottom: 0.5rem;
+      }
+    }
+  }
+}
+.hamburger-bars {
+  cursor: pointer;
+}
+.nav-links.active {
+  right: 0;
+}

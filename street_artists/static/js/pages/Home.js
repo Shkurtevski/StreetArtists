@@ -1,6 +1,8 @@
 import AbstractView from "./AbstractView.js";
 import Navbar from "./components/Navbar.js";
 import { fetchData } from "../data/Data.js";
+import { navigateTo } from "../index.js";
+import { setToStore } from "../store.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -14,6 +16,7 @@ export default class extends AbstractView {
     this.Data = await fetchData();
     const navbarHtml = await this.Navbar.getHtml();
     return `
+      <div class="loader"></div>
       <div id="home">
         ${navbarHtml}
         <div class="main-container">
@@ -47,6 +50,13 @@ export default class extends AbstractView {
 
   onMount() {
     const select = document.querySelector("#select-option-home-section");
+    
+    select.addEventListener("change", (event) => {
+    setToStore("selectedArtistName", event.target.value);
+      navigateTo("/artist"); 
+    });
+
+    console.log("test");
 
     function renderSelectOptions(data) {
       const defaultOption = renderDefaultOption();

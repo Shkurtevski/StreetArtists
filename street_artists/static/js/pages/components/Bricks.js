@@ -16,7 +16,7 @@ export default class extends AbstractView {
                 masterpiece ?
               </p>
                <a href="/visitor/listing" data-link>
-                <button class="btn-dark">
+                <button class="btn btn-dark">
                   Find one now!
                 </button>
               </a>
