@@ -45,7 +45,6 @@ if (storedItems) {
       dateSold: "2021-10-10T02:00:48.989Z",
       priceSold: 2030,
     },
-
     {
       id: 2,
       title: "I choose peace",

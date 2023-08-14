@@ -13,7 +13,6 @@ export default class extends AbstractView {
     this.itemTypes = [];
     this.ContentNavbar = new ContentNavbar();
   }
-
   async getHtml() {
     this.Data = await fetchData();
     this.items = items;

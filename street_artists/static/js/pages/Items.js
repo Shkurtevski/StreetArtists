@@ -13,12 +13,10 @@ export default class extends AbstractView {
     console.log("Received params:", params);
   }
 
-  
-
   async getHtml() {
     this.items = items;
     const artistName = this.artistName;
-    
+
     return `
       <div id="items">
        <nav>
@@ -44,6 +42,48 @@ export default class extends AbstractView {
             </div>
           </div>
         </nav>
+        <div class="edit-window">
+          <div class="edit-window-content">
+            <form id="edit-form">
+              <p class="edit-paragraph"><span>Edit Item:</span><span><label for="item-is-published-checkbox">Is published</label>
+                <input type="checkbox" id="item-is-published-checkbox" name="isPublished" /></span></p>
+                <div class="form-group-artist">
+                  <label for="item-title-input">Title</label>
+                  <input type="text" id="item-title-input" name="title" placeholder="Item Title" />
+                </div>
+              <div class="form-group-artist">
+                <label for="item-description-input">Description</label>
+                <textarea id="item-description-input" name="description" placeholder="Item Description"></textarea>
+              </div>
+              <div class="form-group-artist">
+                    <div class="price-group">
+                      <div class="type-group">
+                        <label for="item-type-input">Type</label>
+                        <input type="text" id="item-type-input" name="type" placeholder="Item Type" />
+                    </div>
+                      <div>
+                        <label for="item-price-input">Price</label>
+                        <input type="number" id="item-price-input" name="price" placeholder="Item Price" />
+                      </div>
+                    </div>
+                  </div>
+              <div class="form-group-artist">
+                <label for="item-image-input">Image URL</label>
+                <input type="text" id="item-image-input" name="image" placeholder="Item Image URL" />
+              </div>
+              <div class="form-group-artist">
+                <label for="item-artist-input">Artist</label>
+                <input type="text" id="item-artist-input" name="artist" placeholder="Item Artist" disabled/>
+              </div>
+              <div class="form-group-artist">
+              </div>
+              <div class="button-wrapper-edit-window">
+                <button class="save-btn btn btn-active-contrast">Save</button>
+                <button class="cancel-btn btn btn-white">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
         <div class="card-container">
           <div class="card-wrapper">
             </div>
@@ -57,7 +97,23 @@ export default class extends AbstractView {
     const hamburger = document.querySelector(".hamburger-bars");
     const navLinks = document.querySelector(".nav-links");
 
+    const editWindow = document.querySelector(".edit-window");
+    const cancelBtn = document.querySelector(".cancel-btn");
+    const saveBtn = document.querySelector(".save-btn");
+
     const cardWrapper = document.querySelector(".card-wrapper");
+
+    const itemIsPublishedCheckbox = document.getElementById(
+      "item-is-published-checkbox"
+    );
+    const itemTitleInput = document.getElementById("item-title-input");
+    const itemDescriptionInput = document.getElementById(
+      "item-description-input"
+    );
+    const itemTypeInput = document.getElementById("item-type-input");
+    const itemPriceInput = document.getElementById("item-price-input");
+    const itemImageInput = document.getElementById("item-image-input");
+    const itemArtistInput = document.getElementById("item-artist-input");
 
     hamburger.addEventListener("click", () => {
       navLinks.classList.toggle("active");
@@ -116,10 +172,9 @@ export default class extends AbstractView {
       buttonsWrapper.append(sendToAuctionBtn, publishBtn, removeBtn, editBtn);
 
       publishBtn.addEventListener("click", () => {
-        item.isPublished = !item.isPublished; // Toggle the isPublished property
-        setItems(items); // Update the array in localStorage
+        item.isPublished = !item.isPublished;
+        setItems(items);
 
-        // Update button text and class
         publishBtn.textContent = item.isPublished ? "Unpublish" : "Publish";
         publishBtn.classList.toggle("btn-green", item.isPublished);
         publishBtn.classList.toggle("btn-white", !item.isPublished);
@@ -135,10 +190,54 @@ export default class extends AbstractView {
 
         console.log(items);
       });
+
+      editBtn.addEventListener("click", () => {
+        itemIsPublishedCheckbox.checked = item.isPublished;
+        itemTitleInput.value = item.title;
+        itemDescriptionInput.value = item.description;
+        itemTypeInput.value = item.type;
+        itemPriceInput.value = item.price;
+        itemImageInput.value = item.image;
+        itemArtistInput.value = item.artist;
+
+        saveBtn.dataset.itemIndex = cardIndex;
+
+        editWindow.classList.toggle("is-active");
+      });
+
+      saveBtn.addEventListener("click", () => {
+        const editedItemIndex = parseInt(saveBtn.dataset.itemIndex, 10);
+
+        if (
+          !isNaN(editedItemIndex) &&
+          editedItemIndex >= 0 &&
+          editedItemIndex < items.length
+        ) {
+          const editedItem = items[editedItemIndex];
+
+          editedItem.isPublished = itemIsPublishedCheckbox.checked;
+          editedItem.title = itemTitleInput.value;
+          editedItem.description = itemDescriptionInput.value;
+          editedItem.type = itemTypeInput.value;
+          editedItem.price = parseFloat(itemPriceInput.value);
+          editedItem.image = itemImageInput.value;
+          editedItem.artist = itemArtistInput.value;
+
+          setItems(items);
+
+          const card = createCardElement(editedItem, editedItemIndex);
+          cardWrapper.replaceChild(card, cardWrapper.children[editedItemIndex]);
+
+          editWindow.classList.remove("is-active");
+        }
+      });
+
       return card;
     }
 
-    
+    cancelBtn.addEventListener("click", (event) => {
+      editWindow.classList.remove("is-active");
+    });
 
     const renderCard = (items) => {
       cardWrapper.innerHTML = "";
@@ -146,14 +245,14 @@ export default class extends AbstractView {
       const renderArtistName = this.artistName;
       items.forEach((item) => {
         if (item.artist === renderArtistName) {
-          // Use arrow function to maintain 'this'
           const card = createCardElement(item, cardIndex);
           cardWrapper.appendChild(card);
           cardIndex++;
         }
       });
-    }
+    };
 
+    console.log(items.length);
     renderCard(items);
   }
 }

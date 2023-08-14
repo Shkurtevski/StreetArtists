@@ -3,7 +3,7 @@
 @use "sass:math";
 
 #items {
-    background-color: var.$background-color-normal;
+  background-color: var.$background-color-normal;
   .card-container {
     font-family: var.$font-family-base;
     padding-top: 80px;
@@ -70,4 +70,109 @@
       }
     }
   }
+}
+
+.edit-window {
+  display: block;
+  margin-top: 80px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 100%;
+  transition: 0.4s;
+  width: 100%;
+  height: calc(100vh - 80px);
+  z-index: 9999;
+  background-color: var.$primary-color-default;
+  form {
+    margin: 2rem 1rem 0 1rem;
+    color: var.$background-color-normal;
+    .edit-paragraph {
+      @extend %d-flex-space-between;
+      flex-direction: row;
+      margin-bottom: 1rem;
+    }
+    .form-group-artist {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+      label,
+      input,
+      select {
+        width: 100%;
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        color: var.$background-color-light;
+        outline: none;
+
+        @media (max-width: 768px) {
+          margin-bottom: 0.5rem;
+          font-size: 1rem;
+        }
+      }
+      input,
+      select,
+      textarea,
+      .item-is-published-checkbox {
+        background-color: transparent;
+        border: 1px solid var.$background-color-normal;
+
+        &::placeholder {
+          font-size: 0.8rem;
+          color: var.$background-color-normal;
+          padding-left: 0.5rem;
+        }
+      }
+
+      textarea {
+        font-size: 1rem;
+        font-family: var.$font-family-base;
+        font-weight: 300;
+        color:var.$background-color-light;
+      }
+      select {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.5rem;
+        color: var.$background-color-normal;
+      }
+
+      .price-group {
+        .type-group {
+          margin-right: 1rem;
+        }
+        @media (max-width: 768px) {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+    }
+    .button-wrapper-edit-window {
+      @extend %d-flex-space-between;
+      button {
+        width: 50%;
+      }
+      .save-btn {
+        margin-right: 1rem;
+      }
+    }
+  }
+  p {
+    font-size: var.$font-size-medium;
+    color: var.$background-color-light;
+    margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+      margin-bottom: 0.5rem;
+      font-size: var.$font-size-small;
+    }
+  }
+}
+
+.edit-window.is-active {
+  left: 0;
+}
+
+#item-title-input {
+  margin-bottom: 0;
 }
