@@ -113,6 +113,20 @@
   width: 100%;
 }
 
+%artist-window-setup {
+  display: block;
+  margin-top: 80px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 100%;
+  transition: 0.4s;
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  overflow-y: auto;
+  z-index: 9999;
+  background-color: var.$primary-color-default;
+}
 /* /////////////////////////////////////////////
 ----------> BRICK-PATTERN <----------
 */ ////////////////////////////////////////////

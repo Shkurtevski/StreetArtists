@@ -6,7 +6,6 @@
   background-color: var.$background-color-normal;
   .card-container {
     font-family: var.$font-family-base;
-    padding-top: 80px;
     .card-wrapper {
       @extend %section;
       width: 80%;
@@ -70,23 +69,31 @@
       }
     }
   }
+  #add-new-item {
+    width: 100%;
+    background-color: var.$background-color-normal;
+    padding-top: calc(80px + 30px);
+    .add-new-item-square {
+      width: 100%;
+      background-color: var.$background-color-light;
+      padding: 1rem;
+      .add-new-item-square-inner {
+        @extend %d-flex-center;
+        border: 2px dashed var.$primary-color-default;
+        padding: 2rem;
+        font-size: var.$font-size-small;
+        color: var.$primary-color-default;
+      }
+    }
+  }
 }
 
 .edit-window {
-  display: block;
-  margin-top: 80px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 100%;
-  transition: 0.4s;
-  width: 100%;
-  height: calc(100vh - 80px);
-  z-index: 9999;
-  background-color: var.$primary-color-default;
+  @extend %artist-window-setup;
   form {
-    margin: 2rem 1rem 0 1rem;
+    margin: 2rem 1rem;
     color: var.$background-color-normal;
+    margin-bottom: var.$gutter-base * 1;
     .edit-paragraph {
       @extend %d-flex-space-between;
       flex-direction: row;
@@ -116,34 +123,60 @@
       .item-is-published-checkbox {
         background-color: transparent;
         border: 1px solid var.$background-color-normal;
-
+        padding: 0.5rem;
         &::placeholder {
           font-size: 0.8rem;
           color: var.$background-color-normal;
           padding-left: 0.5rem;
         }
       }
+      input {
+        margin-bottom: 0;
+      }
+
+      label {
+        font-size: 1.3rem;
+      }
 
       textarea {
         font-size: 1rem;
         font-family: var.$font-family-base;
         font-weight: 300;
-        color:var.$background-color-light;
+        height: 100px;
+        color: var.$background-color-light;
+        outline: 0;
       }
       select {
         font-size: 0.8rem;
         padding: 0.3rem 0.5rem;
         color: var.$background-color-normal;
       }
-
       .price-group {
         .type-group {
           margin-right: 1rem;
+          input {
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+          }
+        }
+        .price-group-inner {
+          input {
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+          }
         }
         @media (max-width: 768px) {
           display: flex;
           justify-content: space-between;
           align-items: center;
+        }
+      }
+    }
+    .edit-image {
+      @extend %d-flex-center;
+      @media (min-width: 375px) {
+        img {
+          width: 400px;
         }
       }
     }
@@ -170,6 +203,124 @@
 }
 
 .edit-window.is-active {
+  left: 0;
+}
+
+.add-new-item-window {
+  @extend %artist-window-setup;
+  #add-new-item-form {
+    margin: 2rem 1rem;
+    color: var.$background-color-normal;
+    margin-bottom: var.$gutter-base * 1;
+    .edit-paragraph {
+      @extend %d-flex-space-between;
+      flex-direction: row;
+      margin-bottom: 1rem;
+    }
+    .form-group-artist {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+      label,
+      input,
+      select {
+        width: 100%;
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        color: var.$background-color-light;
+        outline: none;
+        @media (max-width: 768px) {
+          margin-bottom: 0.5rem;
+          font-size: 1rem;
+        }
+      }
+      input,
+      select,
+      textarea,
+      .new-item-is-published-checkbox {
+        background-color: transparent;
+        border: 1px solid var.$background-color-normal;
+        padding: 0.5rem;
+        &::placeholder {
+          font-size: 0.8rem;
+          color: var.$background-color-normal;
+          padding-left: 0.5rem;
+        }
+      }
+      input {
+        margin-bottom: 0;
+      }
+
+      label {
+        font-size: 1.3rem;
+      }
+
+      textarea {
+        font-size: 1rem;
+        font-family: var.$font-family-base;
+        font-weight: 300;
+        height: 100px;
+        color: var.$background-color-light;
+        outline: 0;
+      }
+      select {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.5rem;
+        color: var.$background-color-normal;
+      }
+      .price-group {
+        .type-group {
+          margin-right: 1rem;
+          input {
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+          }
+        }
+        .price-group-inner {
+          input {
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+          }
+        }
+        @media (max-width: 768px) {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+    }
+    .form-text {
+      @extend %d-flex-center;
+    }
+    .button-wrapper-edit-window {
+      @extend %d-flex-space-between;
+      button {
+        width: 50%;
+      }
+      .save-btn {
+        margin-right: 1rem;
+      }
+    }
+    .camera-square {
+      .camera-square-inner {
+        @extend %d-flex-center;
+        flex-direction: column;
+        border: 2px dashed var.$background-color-light;
+        padding: 2rem;
+        font-size: var.$font-size-small;
+        color: var.$background-color-light;
+        i {
+          font-size: 2.5rem;
+        }
+        p {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+
+.add-new-item-window.is-active {
   left: 0;
 }
 

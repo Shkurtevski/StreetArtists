@@ -61,9 +61,9 @@ export default class extends AbstractView {
                         <label for="item-type-input">Type</label>
                         <input type="text" id="item-type-input" name="type" placeholder="Item Type" />
                     </div>
-                      <div>
+                      <div class="price-group-inner">
                         <label for="item-price-input">Price</label>
-                        <input type="number" id="item-price-input" name="price" placeholder="Item Price" />
+                        <input type="text" id="item-price-input" name="price" placeholder="Item Price" />
                       </div>
                     </div>
                   </div>
@@ -72,10 +72,9 @@ export default class extends AbstractView {
                 <input type="text" id="item-image-input" name="image" placeholder="Item Image URL" />
               </div>
               <div class="form-group-artist">
-                <label for="item-artist-input">Artist</label>
-                <input type="text" id="item-artist-input" name="artist" placeholder="Item Artist" disabled/>
-              </div>
-              <div class="form-group-artist">
+                <div class="edit-image">
+                   <img id="edit-item-image-preview" src="" alt="Edit Item Image Preview" />
+                </div>
               </div>
               <div class="button-wrapper-edit-window">
                 <button class="save-btn btn btn-active-contrast">Save</button>
@@ -84,12 +83,67 @@ export default class extends AbstractView {
             </form>
           </div>
         </div>
+        <div id="add-new-item">
+          <div class="add-new-item-square">
+            <div class="add-new-item-square-inner">
+              <p class="add-new-item-text">&#43; Add new item</p>
+            </div>
+          </div>
+          <div class="add-new-item-window">
+            <div class="new-item-window-content">
+              <form id="add-new-item-form">
+                <p class="edit-paragraph"><span>Edit Item:</span><span><label for="new-item-is-published-checkbox">Is published</label>
+                  <input type="checkbox" id="new-item-is-published-checkbox" name="isPublished" /></span></p>
+                  <div class="form-group-artist">
+                    <label for="new-item-title-input">Title</label>
+                    <input type="text" id="new-item-title-input" name="title" placeholder="Item Title" />
+                  </div>
+                <div class="form-group-artist">
+                  <label for="new-item-description-input">Description</label>
+                  <textarea id="new-item-description-input" name="description" placeholder="Item Description"></textarea>
+                </div>
+                <div class="form-group-artist">
+                      <div class="price-group">
+                        <div class="type-group">
+                          <label for="new-item-type-input">Type</label>
+                          <input type="text" id="new-item-type-input" name="type" placeholder="Item Type" />
+                      </div>
+                        <div class="price-group-inner">
+                          <label for="new-item-price-input">Price</label>
+                          <input type="text" id="new-item-price-input" name="price" placeholder="Item Price" />
+                        </div>
+                      </div>
+                    </div>
+                <div class="form-group-artist">
+                  <label for="new-item-image-input">Image URL</label>
+                  <input type="text" id="new-item-image-input" name="image" placeholder="Item Image URL" />
+                </div>
+                <div class="form-group-artist">
+                  <div class="form-text">
+                  <p>or</p>
+                  </div>
+                </div>
+                <div class="form-group-artist">
+                  <div class="camera-square">
+                    <div class="camera-square-inner">
+                      <i class="fa-solid fa-camera"></i>
+                      <p>Take a snapshot</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="button-wrapper-edit-window">
+                  <button class="save-btn btn btn-active-contrast">Save</button>
+                  <button class="cancel-btn btn btn-white">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
         <div class="card-container">
           <div class="card-wrapper">
             </div>
           </div>
         </div>
-      </div>
     `;
   }
 
@@ -113,7 +167,16 @@ export default class extends AbstractView {
     const itemTypeInput = document.getElementById("item-type-input");
     const itemPriceInput = document.getElementById("item-price-input");
     const itemImageInput = document.getElementById("item-image-input");
-    const itemArtistInput = document.getElementById("item-artist-input");
+
+    const addNewItemSquare = document.querySelector(
+      ".add-new-item-square-inner"
+    );
+    const addNewItemWindow = document.querySelector(".add-new-item-window");
+
+    addNewItemSquare.addEventListener("click", () => {
+      addNewItemWindow.classList.toggle("is-active");
+      console.log("clicked");
+    });
 
     hamburger.addEventListener("click", () => {
       navLinks.classList.toggle("active");
@@ -196,9 +259,13 @@ export default class extends AbstractView {
         itemTitleInput.value = item.title;
         itemDescriptionInput.value = item.description;
         itemTypeInput.value = item.type;
-        itemPriceInput.value = item.price;
+        itemPriceInput.value = `${item.price}$`;
         itemImageInput.value = item.image;
-        itemArtistInput.value = item.artist;
+
+        const editItemImagePreview = document.getElementById(
+          "edit-item-image-preview"
+        );
+        editItemImagePreview.src = item.image;
 
         saveBtn.dataset.itemIndex = cardIndex;
 
@@ -221,7 +288,6 @@ export default class extends AbstractView {
           editedItem.type = itemTypeInput.value;
           editedItem.price = parseFloat(itemPriceInput.value);
           editedItem.image = itemImageInput.value;
-          editedItem.artist = itemArtistInput.value;
 
           setItems(items);
 

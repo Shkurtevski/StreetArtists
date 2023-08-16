@@ -33,13 +33,13 @@ img {
 /* /////////////////////////////////////////////
 ----------> MEDIA-QUERIES <----------
 */
-#items .card-container .card-wrapper .card .card-body .buttons-wrapper-card, #artist .main-container .main-wrapper .content-wrapper .left-right-wrapper, .main-container .bricks-pattern .bricks-text, nav, nav .nav-wrapper, nav .nav-wrapper .nav-content-wrapper .nav-content a, .main-container .main-wrapper .banner, nav .main-nav-wrapper, .main-container .main-wrapper .banner .banner-wrapper .banner-content .square-one, .main-container .main-wrapper .banner .banner-wrapper .banner-content a .square-two {
+#items .card-container .card-wrapper .card .card-body .buttons-wrapper-card, #items #add-new-item .add-new-item-square .add-new-item-square-inner, .edit-window form .edit-image, .add-new-item-window #add-new-item-form .form-text, .add-new-item-window #add-new-item-form .camera-square .camera-square-inner, #artist .main-container .main-wrapper .content-wrapper .left-right-wrapper, .main-container .bricks-pattern .bricks-text, nav, nav .nav-wrapper, nav .nav-wrapper .nav-content-wrapper .nav-content a, .main-container .main-wrapper .banner, nav .main-nav-wrapper, .main-container .main-wrapper .banner .banner-wrapper .banner-content .square-one, .main-container .main-wrapper .banner .banner-wrapper .banner-content a .square-two {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#items .card-container .card-wrapper .card .card-body .card-p-title-element, .edit-window form .edit-paragraph, .edit-window form .button-wrapper-edit-window, #artist .main-container .chart-content-wrapper .chart-content .chart-buttons-wrapper, #listing .main-container .card-container .card-wrapper .card .card-body .card-p-title-element, nav .nav-wrapper .nav-content-wrapper {
+#items .card-container .card-wrapper .card .card-body .card-p-title-element, .edit-window form .edit-paragraph, .edit-window form .button-wrapper-edit-window, .add-new-item-window #add-new-item-form .edit-paragraph, .add-new-item-window #add-new-item-form .button-wrapper-edit-window, #artist .main-container .chart-content-wrapper .chart-content .chart-buttons-wrapper, #listing .main-container .card-container .card-wrapper .card .card-body .card-p-title-element, nav .nav-wrapper .nav-content-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -87,6 +87,21 @@ img {
   transform: translate(-50%, -50%);
   text-align: center;
   width: 100%;
+}
+
+.edit-window, .add-new-item-window {
+  display: block;
+  margin-top: 80px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 100%;
+  transition: 0.4s;
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  overflow-y: auto;
+  z-index: 9999;
+  background-color: #A16A5E;
 }
 
 /* /////////////////////////////////////////////
@@ -773,7 +788,6 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
 }
 #items .card-container {
   font-family: "Roboto", Arial, sans-serif;
-  padding-top: 80px;
 }
 #items .card-container .card-wrapper {
   width: 80%;
@@ -836,23 +850,27 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
     width: 100%;
   }
 }
-
-.edit-window {
-  display: block;
-  margin-top: 80px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 100%;
-  transition: 0.4s;
+#items #add-new-item {
   width: 100%;
-  height: calc(100vh - 80px);
-  z-index: 9999;
-  background-color: #A16A5E;
+  background-color: #EDD5BB;
+  padding-top: 110px;
 }
+#items #add-new-item .add-new-item-square {
+  width: 100%;
+  background-color: #FCEBD5;
+  padding: 1rem;
+}
+#items #add-new-item .add-new-item-square .add-new-item-square-inner {
+  border: 2px dashed #A16A5E;
+  padding: 2rem;
+  font-size: 1.5rem;
+  color: #A16A5E;
+}
+
 .edit-window form {
-  margin: 2rem 1rem 0 1rem;
+  margin: 2rem 1rem;
   color: #EDD5BB;
+  margin-bottom: 1.875rem;
 }
 .edit-window form .edit-paragraph {
   flex-direction: row;
@@ -886,6 +904,7 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
 .edit-window form .form-group-artist .item-is-published-checkbox {
   background-color: transparent;
   border: 1px solid #EDD5BB;
+  padding: 0.5rem;
 }
 .edit-window form .form-group-artist input::-moz-placeholder, .edit-window form .form-group-artist select::-moz-placeholder, .edit-window form .form-group-artist textarea::-moz-placeholder, .edit-window form .form-group-artist .item-is-published-checkbox::-moz-placeholder {
   font-size: 0.8rem;
@@ -900,11 +919,19 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
   color: #EDD5BB;
   padding-left: 0.5rem;
 }
+.edit-window form .form-group-artist input {
+  margin-bottom: 0;
+}
+.edit-window form .form-group-artist label {
+  font-size: 1.3rem;
+}
 .edit-window form .form-group-artist textarea {
   font-size: 1rem;
   font-family: "Roboto", Arial, sans-serif;
   font-weight: 300;
+  height: 100px;
   color: #FCEBD5;
+  outline: 0;
 }
 .edit-window form .form-group-artist select {
   font-size: 0.8rem;
@@ -914,11 +941,24 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
 .edit-window form .form-group-artist .price-group .type-group {
   margin-right: 1rem;
 }
+.edit-window form .form-group-artist .price-group .type-group input {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+.edit-window form .form-group-artist .price-group .price-group-inner input {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
 @media (max-width: 768px) {
   .edit-window form .form-group-artist .price-group {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+}
+@media (min-width: 375px) {
+  .edit-window form .edit-image img {
+    width: 400px;
   }
 }
 .edit-window form .button-wrapper-edit-window button {
@@ -940,6 +980,119 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
 }
 
 .edit-window.is-active {
+  left: 0;
+}
+
+.add-new-item-window #add-new-item-form {
+  margin: 2rem 1rem;
+  color: #EDD5BB;
+  margin-bottom: 1.875rem;
+}
+.add-new-item-window #add-new-item-form .edit-paragraph {
+  flex-direction: row;
+  margin-bottom: 1rem;
+}
+.add-new-item-window #add-new-item-form .form-group-artist {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.add-new-item-window #add-new-item-form .form-group-artist label,
+.add-new-item-window #add-new-item-form .form-group-artist input,
+.add-new-item-window #add-new-item-form .form-group-artist select {
+  width: 100%;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #FCEBD5;
+  outline: none;
+}
+@media (max-width: 768px) {
+  .add-new-item-window #add-new-item-form .form-group-artist label,
+  .add-new-item-window #add-new-item-form .form-group-artist input,
+  .add-new-item-window #add-new-item-form .form-group-artist select {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+}
+.add-new-item-window #add-new-item-form .form-group-artist input,
+.add-new-item-window #add-new-item-form .form-group-artist select,
+.add-new-item-window #add-new-item-form .form-group-artist textarea,
+.add-new-item-window #add-new-item-form .form-group-artist .new-item-is-published-checkbox {
+  background-color: transparent;
+  border: 1px solid #EDD5BB;
+  padding: 0.5rem;
+}
+.add-new-item-window #add-new-item-form .form-group-artist input::-moz-placeholder, .add-new-item-window #add-new-item-form .form-group-artist select::-moz-placeholder, .add-new-item-window #add-new-item-form .form-group-artist textarea::-moz-placeholder, .add-new-item-window #add-new-item-form .form-group-artist .new-item-is-published-checkbox::-moz-placeholder {
+  font-size: 0.8rem;
+  color: #EDD5BB;
+  padding-left: 0.5rem;
+}
+.add-new-item-window #add-new-item-form .form-group-artist input::placeholder,
+.add-new-item-window #add-new-item-form .form-group-artist select::placeholder,
+.add-new-item-window #add-new-item-form .form-group-artist textarea::placeholder,
+.add-new-item-window #add-new-item-form .form-group-artist .new-item-is-published-checkbox::placeholder {
+  font-size: 0.8rem;
+  color: #EDD5BB;
+  padding-left: 0.5rem;
+}
+.add-new-item-window #add-new-item-form .form-group-artist input {
+  margin-bottom: 0;
+}
+.add-new-item-window #add-new-item-form .form-group-artist label {
+  font-size: 1.3rem;
+}
+.add-new-item-window #add-new-item-form .form-group-artist textarea {
+  font-size: 1rem;
+  font-family: "Roboto", Arial, sans-serif;
+  font-weight: 300;
+  height: 100px;
+  color: #FCEBD5;
+  outline: 0;
+}
+.add-new-item-window #add-new-item-form .form-group-artist select {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.5rem;
+  color: #EDD5BB;
+}
+.add-new-item-window #add-new-item-form .form-group-artist .price-group .type-group {
+  margin-right: 1rem;
+}
+.add-new-item-window #add-new-item-form .form-group-artist .price-group .type-group input {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+.add-new-item-window #add-new-item-form .form-group-artist .price-group .price-group-inner input {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+@media (max-width: 768px) {
+  .add-new-item-window #add-new-item-form .form-group-artist .price-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.add-new-item-window #add-new-item-form .button-wrapper-edit-window button {
+  width: 50%;
+}
+.add-new-item-window #add-new-item-form .button-wrapper-edit-window .save-btn {
+  margin-right: 1rem;
+}
+.add-new-item-window #add-new-item-form .camera-square .camera-square-inner {
+  flex-direction: column;
+  border: 2px dashed #FCEBD5;
+  padding: 2rem;
+  font-size: 1.5rem;
+  color: #FCEBD5;
+}
+.add-new-item-window #add-new-item-form .camera-square .camera-square-inner i {
+  font-size: 2.5rem;
+}
+.add-new-item-window #add-new-item-form .camera-square .camera-square-inner p {
+  font-size: 1rem;
+}
+
+.add-new-item-window.is-active {
   left: 0;
 }
 
