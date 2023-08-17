@@ -186,9 +186,7 @@ export default class extends AbstractView {
     const cameraFeedPopup = document.getElementById("camera-feed-popup");
     const captureButtonPopup = document.getElementById("capture-button-popup");
     const cameraPopup = document.getElementById("camera-popup");
-    const capturedImages = []; // Array to store captured images
     let cameraStreamPopup = null;
-    console.log(capturedImages);
 
     cameraIcon.addEventListener("click", () => {
       cameraPopup.style.display = "block";
@@ -206,7 +204,7 @@ export default class extends AbstractView {
       }
     });
 
-    captureButtonPopup.addEventListener("click", (event) => {
+    captureButtonPopup.addEventListener("click", async (event) => {
       event.preventDefault();
       if (cameraStreamPopup) {
         const canvas = document.createElement("canvas");
@@ -215,24 +213,30 @@ export default class extends AbstractView {
         const context = canvas.getContext("2d");
         context.drawImage(cameraFeedPopup, 0, 0, canvas.width, canvas.height);
 
-        const dataUrl = canvas.toDataURL("image/png");
+        const blob = await new Promise((resolve) => {
+          canvas.toBlob(resolve, "image/jpeg", 0.7);
+        });
 
-        // Show the captured image in the "camera-square" element
-        const cameraSquare = document.querySelector(".camera-square");
-        cameraSquare.innerHTML = `<img src="${dataUrl}" alt="Captured Image" class="captured-image" />`;
+        // Convert blob to Data URL
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+          const dataUrl = reader.result;
 
-        // Fill the image URL input with the Data URL
-        const newItemImageInput = document.getElementById(
-          "new-item-image-input"
-        );
-        newItemImageInput.value = dataUrl;
+          // Show the captured image in the "camera-square" element
+          const cameraSquare = document.querySelector(".camera-square");
+          cameraSquare.innerHTML = `<img src="${dataUrl}" alt="Captured Image" class="captured-image" />`;
 
-        // Close the popup
-        cameraPopup.style.display = "none";
-        cameraStreamPopup.getTracks().forEach((track) => track.stop());
+          // Fill the image URL input with the Data URL
+          const newItemImageInput = document.getElementById(
+            "new-item-image-input"
+          );
+          newItemImageInput.value = dataUrl;
 
-        // Store the captured image in the array if needed
-        capturedImages.push(dataUrl);
+          // Close the popup
+          cameraPopup.style.display = "none";
+          cameraStreamPopup.getTracks().forEach((track) => track.stop());
+        };
       }
     });
 
@@ -258,12 +262,13 @@ export default class extends AbstractView {
       );
       const newItemTypeInput = document.getElementById("new-item-type-input");
       const newItemPriceInput = document.getElementById("new-item-price-input");
+      const newItemImageInput = document.getElementById("new-item-image-input"); // Get the input element
 
       // Create a new item object with input values
       const newItem = {
         id: Date.now(),
         description: newItemDescriptionInput.value,
-        image: capturedImages[0].src,
+        image: newItemImageInput.value, // Use the Data URL from the input
         price: parseFloat(newItemPriceInput.value),
         artist: this.artistName,
         dateCreated: "2023-10-13T02:00:48.990Z",
@@ -285,18 +290,19 @@ export default class extends AbstractView {
         cardWrapper.appendChild(card);
       }
 
-      // Clear the capturedImages array and form fields
-      capturedImages.length = 0;
+      // Clear the form fields
       newItemIsPublishedCheckbox.checked = false;
       newItemTitleInput.value = "";
       newItemDescriptionInput.value = "";
       newItemTypeInput.value = "";
       newItemPriceInput.value = "";
+      newItemImageInput.value = ""; // Clear the input field
 
       cameraPopup.style.display = "none";
       addNewItemWindow.classList.remove("is-active");
       console.log("New Item:", newItem);
     });
+
 
     addNewItemSquare.addEventListener("click", () => {
       addNewItemWindow.classList.toggle("is-active");
