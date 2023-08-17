@@ -126,13 +126,20 @@ export default class extends AbstractView {
                 <div class="form-group-artist">
                   <div class="camera-square">
                     <div class="camera-square-inner">
-                      <i class="fa-solid fa-camera"></i>
-                      <p>Take a snapshot</p>
-                    </div>
+                      <i class="fa-solid fa-camera" id="camera-icon"></i>
+                        <p>Take a snapshot</p>
+                      </div>
                   </div>
+                  <div class="camera-popup" id="camera-popup">
+                    <div class="popup-content">
+                      <h3>Take a Snapshot</h3>
+                      <video id="camera-feed-popup" autoplay></video>
+                      <button class="capture-btn btn btn-active-contrast" id="capture-button-popup">Capture</button>
+                      </div>
+                </div>
                 </div>
                 <div class="button-wrapper-edit-window">
-                  <button class="save-btn btn btn-active-contrast">Save</button>
+                  <button class="save-btn-camera btn btn-active-contrast">Save</button>
                   <button class="cancel-btn btn btn-white">Cancel</button>
                 </div>
               </form>
@@ -154,6 +161,7 @@ export default class extends AbstractView {
     const editWindow = document.querySelector(".edit-window");
     const cancelBtn = document.querySelector(".cancel-btn");
     const saveBtn = document.querySelector(".save-btn");
+    const saveBtnCamera = document.querySelector(".save-btn-camera");
 
     const cardWrapper = document.querySelector(".card-wrapper");
 
@@ -172,6 +180,123 @@ export default class extends AbstractView {
       ".add-new-item-square-inner"
     );
     const addNewItemWindow = document.querySelector(".add-new-item-window");
+
+    const addNewItemSquareCamera = document.querySelector(".camera-square");
+    const cameraIcon = document.getElementById("camera-icon");
+    const cameraFeedPopup = document.getElementById("camera-feed-popup");
+    const captureButtonPopup = document.getElementById("capture-button-popup");
+    const cameraPopup = document.getElementById("camera-popup");
+    const capturedImages = []; // Array to store captured images
+    let cameraStreamPopup = null;
+    console.log(capturedImages);
+
+    cameraIcon.addEventListener("click", () => {
+      cameraPopup.style.display = "block";
+
+      if (!cameraStreamPopup) {
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then((stream) => {
+            cameraStreamPopup = stream;
+            cameraFeedPopup.srcObject = stream;
+          })
+          .catch((error) => {
+            console.error("Error accessing camera:", error);
+          });
+      }
+    });
+
+    captureButtonPopup.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (cameraStreamPopup) {
+        const canvas = document.createElement("canvas");
+        canvas.width = cameraFeedPopup.videoWidth;
+        canvas.height = cameraFeedPopup.videoHeight;
+        const context = canvas.getContext("2d");
+        context.drawImage(cameraFeedPopup, 0, 0, canvas.width, canvas.height);
+
+        const dataUrl = canvas.toDataURL("image/png");
+
+        // Show the captured image in the "camera-square" element
+        const cameraSquare = document.querySelector(".camera-square");
+        cameraSquare.innerHTML = `<img src="${dataUrl}" alt="Captured Image" class="captured-image" />`;
+
+        // Fill the image URL input with the Data URL
+        const newItemImageInput = document.getElementById(
+          "new-item-image-input"
+        );
+        newItemImageInput.value = dataUrl;
+
+        // Close the popup
+        cameraPopup.style.display = "none";
+        cameraStreamPopup.getTracks().forEach((track) => track.stop());
+
+        // Store the captured image in the array if needed
+        capturedImages.push(dataUrl);
+      }
+    });
+
+    addNewItemSquareCamera.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent the default click behavior
+
+      const cameraSquare = document.querySelector(".camera-square-inner");
+      cameraSquare.innerHTML = ""; // Clear any previous content
+
+      cameraPopup.style.display = "block";
+    });
+
+    saveBtnCamera.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      // Retrieve input elements for "Add new item" form
+      const newItemIsPublishedCheckbox = document.getElementById(
+        "new-item-is-published-checkbox"
+      );
+      const newItemTitleInput = document.getElementById("new-item-title-input");
+      const newItemDescriptionInput = document.getElementById(
+        "new-item-description-input"
+      );
+      const newItemTypeInput = document.getElementById("new-item-type-input");
+      const newItemPriceInput = document.getElementById("new-item-price-input");
+
+      // Create a new item object with input values
+      const newItem = {
+        id: Date.now(),
+        description: newItemDescriptionInput.value,
+        image: capturedImages[0].src,
+        price: parseFloat(newItemPriceInput.value),
+        artist: this.artistName,
+        dateCreated: "2023-10-13T02:00:48.990Z",
+        isPublished: true,
+        isAuctioning: false,
+        dateSold: "2023-11-29T02:00:48.990Z",
+        priceSold: 16203,
+        title: newItemTitleInput.value,
+        type: newItemTypeInput.value,
+      };
+
+      // Add the new item to the items array
+      items.push(newItem);
+      setItems(items);
+
+      // Render the new item's card if it's for the selected artist
+      if (newItem.artist === this.artistName) {
+        const card = createCardElement(newItem, items.length - 1);
+        cardWrapper.appendChild(card);
+      }
+
+      // Clear the capturedImages array and form fields
+      capturedImages.length = 0;
+      newItemIsPublishedCheckbox.checked = false;
+      newItemTitleInput.value = "";
+      newItemDescriptionInput.value = "";
+      newItemTypeInput.value = "";
+      newItemPriceInput.value = "";
+
+      cameraPopup.style.display = "none";
+      addNewItemWindow.classList.remove("is-active");
+      console.log("New Item:", newItem);
+    });
 
     addNewItemSquare.addEventListener("click", () => {
       addNewItemWindow.classList.toggle("is-active");

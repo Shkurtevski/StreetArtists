@@ -53,6 +53,7 @@
       }
     }
     .chart-content-wrapper {
+      margin-bottom: 150px;
       .chart-content {
         @extend %wrap;
         @extend %section;
@@ -122,4 +123,8 @@
 }
 .nav-links.active {
   right: 0;
+}
+
+html {
+  background-color: var.$background-color-light;
 }

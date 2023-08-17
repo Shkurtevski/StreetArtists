@@ -92,16 +92,22 @@ img {
 .edit-window, .add-new-item-window {
   display: block;
   margin-top: 80px;
+  padding-bottom: 150px;
   position: fixed;
   top: 0;
   right: 0;
   left: 100%;
   transition: 0.4s;
   width: 100%;
-  min-height: calc(100vh - 80px);
+  max-height: 100vh;
   overflow-y: auto;
   z-index: 9999;
   background-color: #A16A5E;
+}
+@media (max-width: 768px) {
+  .edit-window, .add-new-item-window {
+    margin-bottom: 250px;
+  }
 }
 
 /* /////////////////////////////////////////////
@@ -242,6 +248,7 @@ nav .main-nav-wrapper a p {
 }
 
 .main-container .main-wrapper .banner {
+  margin-bottom: 150px;
   width: 100%;
   padding-top: 85px;
   flex-direction: column;
@@ -713,6 +720,9 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
   text-transform: capitalize;
   padding-bottom: 0.5rem;
 }
+#artist .main-container .chart-content-wrapper {
+  margin-bottom: 150px;
+}
 #artist .main-container .chart-content-wrapper .chart-content p {
   padding-bottom: 1rem;
   color: #A16A5E;
@@ -781,6 +791,10 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
 
 .nav-links.active {
   right: 0;
+}
+
+html {
+  background-color: #FCEBD5;
 }
 
 #items {
@@ -1090,6 +1104,27 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
 }
 .add-new-item-window #add-new-item-form .camera-square .camera-square-inner p {
   font-size: 1rem;
+}
+
+.camera-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: #FCEBD5;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
 }
 
 .add-new-item-window.is-active {
