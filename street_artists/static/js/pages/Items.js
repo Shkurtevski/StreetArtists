@@ -135,7 +135,7 @@ export default class extends AbstractView {
                       <h3>Take a Snapshot</h3>
                       <video id="camera-feed-popup" autoplay></video>
                       <button class="capture-btn btn btn-active-contrast" id="capture-button-popup">Capture</button>
-                      </div>
+                    </div>
                 </div>
                 </div>
                 <div class="button-wrapper-edit-window">
@@ -161,7 +161,6 @@ export default class extends AbstractView {
     const editWindow = document.querySelector(".edit-window");
     const cancelBtn = document.querySelector(".cancel-btn");
     const saveBtn = document.querySelector(".save-btn");
-    const saveBtnCamera = document.querySelector(".save-btn-camera");
 
     const cardWrapper = document.querySelector(".card-wrapper");
 
@@ -186,6 +185,7 @@ export default class extends AbstractView {
     const cameraFeedPopup = document.getElementById("camera-feed-popup");
     const captureButtonPopup = document.getElementById("capture-button-popup");
     const cameraPopup = document.getElementById("camera-popup");
+    const saveBtnCamera = document.querySelector(".save-btn-camera");
     let cameraStreamPopup = null;
 
     cameraIcon.addEventListener("click", () => {
@@ -204,6 +204,10 @@ export default class extends AbstractView {
       }
     });
 
+    let capturedImage = null;
+
+    // ... (other code)
+
     captureButtonPopup.addEventListener("click", async (event) => {
       event.preventDefault();
       if (cameraStreamPopup) {
@@ -217,42 +221,47 @@ export default class extends AbstractView {
           canvas.toBlob(resolve, "image/jpeg", 0.7);
         });
 
-        // Convert blob to Data URL
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => {
-          const dataUrl = reader.result;
+        const uniqueImageName = `image_${Date.now()}.jpg`;
 
-          // Show the captured image in the "camera-square" element
-          const cameraSquare = document.querySelector(".camera-square");
-          cameraSquare.innerHTML = `<img src="${dataUrl}" alt="Captured Image" class="captured-image" />`;
+        const imageFile = new File([blob], uniqueImageName, {
+          type: "image/jpeg",
+        });
 
-          // Fill the image URL input with the Data URL
-          const newItemImageInput = document.getElementById(
-            "new-item-image-input"
-          );
-          newItemImageInput.value = dataUrl;
+        const newItemImageInput = document.getElementById(
+          "new-item-image-input"
+        );
+        newItemImageInput.value = uniqueImageName;
 
-          // Close the popup
-          cameraPopup.style.display = "none";
-          cameraStreamPopup.getTracks().forEach((track) => track.stop());
-        };
+        const cameraSquareInner = document.querySelector(
+          ".camera-square-inner"
+        );
+
+        // Remove any existing capturedImage element
+        if (capturedImage) {
+          capturedImage.remove();
+        }
+
+        // Create a new img element and set attributes
+        capturedImage = document.createElement("img");
+        capturedImage.src = URL.createObjectURL(imageFile);
+        capturedImage.alt = "Captured Image";
+        capturedImage.className = "captured-image";
+
+        // Append the new capturedImage element
+        cameraSquareInner.appendChild(capturedImage);
+
+        // Store the captured image in local storage
+        localStorage.setItem("capturedImage", capturedImage.src);
+
+        // Hide the camera popup and stop the camera stream
+        cameraPopup.style.display = "none";
+        cameraStreamPopup.getTracks().forEach((track) => track.stop());
       }
-    });
-
-    addNewItemSquareCamera.addEventListener("click", (event) => {
-      event.preventDefault(); // Prevent the default click behavior
-
-      const cameraSquare = document.querySelector(".camera-square-inner");
-      cameraSquare.innerHTML = ""; // Clear any previous content
-
-      cameraPopup.style.display = "block";
     });
 
     saveBtnCamera.addEventListener("click", (event) => {
       event.preventDefault();
 
-      // Retrieve input elements for "Add new item" form
       const newItemIsPublishedCheckbox = document.getElementById(
         "new-item-is-published-checkbox"
       );
@@ -262,13 +271,12 @@ export default class extends AbstractView {
       );
       const newItemTypeInput = document.getElementById("new-item-type-input");
       const newItemPriceInput = document.getElementById("new-item-price-input");
-      const newItemImageInput = document.getElementById("new-item-image-input"); // Get the input element
+      const newItemImageInput = document.getElementById("new-item-image-input");
 
-      // Create a new item object with input values
       const newItem = {
         id: Date.now(),
         description: newItemDescriptionInput.value,
-        image: newItemImageInput.value, // Use the Data URL from the input
+        image: newItemImageInput.value,
         price: parseFloat(newItemPriceInput.value),
         artist: this.artistName,
         dateCreated: "2023-10-13T02:00:48.990Z",
@@ -280,29 +288,33 @@ export default class extends AbstractView {
         type: newItemTypeInput.value,
       };
 
-      // Add the new item to the items array
+      // Store the captured image in local storage
+      if (capturedImage) {
+        localStorage.setItem("capturedImage", capturedImage.src);
+        newItem.image = capturedImage.src;
+        capturedImage = null;
+      }
+
       items.push(newItem);
       setItems(items);
 
-      // Render the new item's card if it's for the selected artist
       if (newItem.artist === this.artistName) {
         const card = createCardElement(newItem, items.length - 1);
         cardWrapper.appendChild(card);
       }
 
-      // Clear the form fields
       newItemIsPublishedCheckbox.checked = false;
       newItemTitleInput.value = "";
       newItemDescriptionInput.value = "";
       newItemTypeInput.value = "";
       newItemPriceInput.value = "";
-      newItemImageInput.value = ""; // Clear the input field
+
+      newItemImageInput.value = "";
 
       cameraPopup.style.display = "none";
       addNewItemWindow.classList.remove("is-active");
       console.log("New Item:", newItem);
     });
-
 
     addNewItemSquare.addEventListener("click", () => {
       addNewItemWindow.classList.toggle("is-active");
@@ -390,7 +402,7 @@ export default class extends AbstractView {
         itemTitleInput.value = item.title;
         itemDescriptionInput.value = item.description;
         itemTypeInput.value = item.type;
-        itemPriceInput.value = `${item.price}$`;
+        itemPriceInput.value = item.price.toString();
         itemImageInput.value = item.image;
 
         const editItemImagePreview = document.getElementById(
@@ -400,10 +412,12 @@ export default class extends AbstractView {
 
         saveBtn.dataset.itemIndex = cardIndex;
 
-        editWindow.classList.toggle("is-active");
+        editWindow.classList.add("is-active");
       });
 
-      saveBtn.addEventListener("click", () => {
+      // Save button click event listener
+      saveBtn.addEventListener("click", (event) => {
+        event.preventDefault();
         const editedItemIndex = parseInt(saveBtn.dataset.itemIndex, 10);
 
         if (
@@ -422,10 +436,16 @@ export default class extends AbstractView {
 
           setItems(items);
 
-          const card = createCardElement(editedItem, editedItemIndex);
-          cardWrapper.replaceChild(card, cardWrapper.children[editedItemIndex]);
+          // Update the content of the existing card element
+          const updatedCard = createCardElement(editedItem, editedItemIndex);
+          const existingCard = cardWrapper.children[editedItemIndex]; // Get the existing card element
 
-          editWindow.classList.remove("is-active");
+          if (Node.prototype.isPrototypeOf(existingCard)) {
+            cardWrapper.replaceChild(updatedCard, existingCard);
+            editWindow.classList.remove("is-active");
+          } else {
+            console.error("Existing card element is not a valid Node.");
+          }
         }
       });
 

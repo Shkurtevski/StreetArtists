@@ -33,7 +33,7 @@ img {
 /* /////////////////////////////////////////////
 ----------> MEDIA-QUERIES <----------
 */
-#items .card-container .card-wrapper .card .card-body .buttons-wrapper-card, #items #add-new-item .add-new-item-square .add-new-item-square-inner, .edit-window form .edit-image, .add-new-item-window #add-new-item-form .form-text, .add-new-item-window #add-new-item-form .camera-square .camera-square-inner, #artist .main-container .main-wrapper .content-wrapper .left-right-wrapper, .main-container .bricks-pattern .bricks-text, nav, nav .nav-wrapper, nav .nav-wrapper .nav-content-wrapper .nav-content a, .main-container .main-wrapper .banner, nav .main-nav-wrapper, .main-container .main-wrapper .banner .banner-wrapper .banner-content .square-one, .main-container .main-wrapper .banner .banner-wrapper .banner-content a .square-two {
+#items .card-container .card-wrapper .card .card-body .buttons-wrapper-card, #items #add-new-item .add-new-item-square .add-new-item-square-inner, .edit-window form .edit-image, .add-new-item-window #add-new-item-form .form-text, .add-new-item-window #add-new-item-form .camera-square .camera-square-inner, .camera-popup .popup-content, #artist .main-container .main-wrapper .content-wrapper .left-right-wrapper, .main-container .bricks-pattern .bricks-text, nav, nav .nav-wrapper, nav .nav-wrapper .nav-content-wrapper .nav-content a, .main-container .main-wrapper .banner, nav .main-nav-wrapper, .main-container .main-wrapper .banner .banner-wrapper .banner-content .square-one, .main-container .main-wrapper .banner .banner-wrapper .banner-content a .square-two {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -348,6 +348,9 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
   animation: scrollLeft 40s linear infinite;
   flex-direction: row-reverse;
 }
+.main-container .content-slider-wrapper .slider-one:hover {
+  animation-play-state: paused;
+}
 .main-container .content-slider-wrapper .slider-one .slide a img:hover {
   transform: translateZ(10px);
 }
@@ -356,6 +359,9 @@ nav .nav-wrapper .nav-content-wrapper .nav-content a p {
   width: 4500px;
   animation: scrollRight 40s linear infinite;
   padding-bottom: 1.875rem;
+}
+.main-container .content-slider-wrapper .slider-two:hover {
+  animation-play-state: paused;
 }
 .main-container .content-slider-wrapper .slider-two .slide a img:hover {
   transform: translateZ(10px);
@@ -1133,4 +1139,13 @@ html {
 
 #item-title-input {
   margin-bottom: 0;
+}
+
+.camera-popup .popup-content {
+  flex-direction: column;
+}
+.camera-popup .popup-content #camera-feed-popup {
+  width: 300px;
+  padding-top: 3rem;
+  margin-bottom: 1rem;
 }/*# sourceMappingURL=main.css.map */

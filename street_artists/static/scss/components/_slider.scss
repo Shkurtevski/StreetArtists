@@ -11,6 +11,9 @@
       width: calc(250px * 18);
       animation: scrollLeft 40s linear infinite;
       flex-direction: row-reverse;
+      &:hover {
+        animation-play-state: paused;
+      }
       .slide {
         a {
           @extend %slide-setup;
@@ -28,6 +31,9 @@
       width: calc(250px * 18);
       animation: scrollRight 40s linear infinite;
       padding-bottom: var.$gutter-base;
+      &:hover {
+        animation-play-state: paused;
+      }
       .slide {
         a {
           @extend %slide-setup;

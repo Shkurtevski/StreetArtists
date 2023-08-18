@@ -188,7 +188,6 @@
       .save-btn {
         margin-right: 1rem;
       }
-      
     }
   }
 
@@ -319,30 +318,28 @@
         }
       }
     }
-    
   }
 }
 
-
 .camera-popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
 }
 
 .popup-content {
-    background-color: var.$background-color-light;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    position: relative;
+  background-color: var.$background-color-light;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
 }
 .add-new-item-window.is-active {
   left: 0;
@@ -350,4 +347,16 @@
 
 #item-title-input {
   margin-bottom: 0;
+}
+
+.camera-popup {
+  .popup-content {
+    @extend %d-flex-center;
+    flex-direction: column;
+    #camera-feed-popup {
+      width: 300px;
+      padding-top: 3rem;
+      margin-bottom: 1rem;
+    }
+  }
 }
