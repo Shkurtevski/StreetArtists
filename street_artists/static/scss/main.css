@@ -39,7 +39,7 @@ img {
   align-items: center;
 }
 
-#items .card-container .card-wrapper .card .card-body .card-p-title-element, .edit-window form .edit-paragraph, .edit-window form .button-wrapper-edit-window, .add-new-item-window #add-new-item-form .edit-paragraph, .add-new-item-window #add-new-item-form .button-wrapper-edit-window, #artist .main-container .chart-content-wrapper .chart-content .chart-buttons-wrapper, #listing .main-container .card-container .card-wrapper .card .card-body .card-p-title-element, nav .nav-wrapper .nav-content-wrapper {
+#auction .card-container .card-wrapper .card .card-body .card-p-title-element, #items .card-container .card-wrapper .card .card-body .card-p-title-element, .edit-window form .edit-paragraph, .edit-window form .button-wrapper-edit-window, .add-new-item-window #add-new-item-form .edit-paragraph, .add-new-item-window #add-new-item-form .button-wrapper-edit-window, #artist .main-container .chart-content-wrapper .chart-content .chart-buttons-wrapper, #listing .main-container .card-container .card-wrapper .card .card-body .card-p-title-element, nav .nav-wrapper .nav-content-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1160,4 +1160,71 @@ html {
 
 .save-btn-camera {
   margin-right: 1rem;
+}
+
+#auction {
+  font-family: "Roboto", Arial, sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #FCEBD5;
+}
+#auction .card-container {
+  font-family: "Roboto", Arial, sans-serif;
+}
+#auction .card-container .card-wrapper {
+  width: 80%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  max-width: 100%;
+  overflow: auto;
+  padding-top: 80px;
+  margin-bottom: 1rem;
+}
+#auction .card-container .card-wrapper .card {
+  margin-top: 2rem;
+}
+#auction .card-container .card-wrapper .card .card-image {
+  width: 100%;
+}
+#auction .card-container .card-wrapper .card .card-body {
+  background-color: #A16A5E;
+  color: #FCEBD5;
+}
+#auction .card-container .card-wrapper .card .card-body .card-p-one-element {
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+}
+#auction .card-container .card-wrapper .card .card-body .card-p-two-element {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+}
+#auction .card-container .card-wrapper .card .card-body .card-p-title-element {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+}
+#auction .card-container .card-wrapper .card .card-body .card-p-title-element .card-span-element {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.4rem;
+}
+#auction .card-container .card-wrapper .card .card-body .card-p-title-element .card-p-title-span-element {
+  font-family: "Reenie Beanie", "Roboto", Arial, sans-serif;
+  font-size: 1.8rem;
+}
+@media (max-width: 768px) {
+  #auction .card-container .card-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  #auction .card-container .card-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+    width: 100%;
+  }
+}
+#auction .live-auction .live-auction-inner #btn-bid {
+  width: 100%;
 }/*# sourceMappingURL=main.css.map */
