@@ -9,9 +9,8 @@ export function getFromStore(key) {
   return storedValue ? JSON.parse(storedValue) : null;
 }
 
-export const extractArtistNameFromPath = extractArtistNameFromPath => {
-  const pathParts = window.location.pathname.split('/');
-  const artistNameIndex = pathParts.indexOf('artist') + 2;
+export const extractArtistNameFromPath = (extractArtistNameFromPath) => {
+  const pathParts = window.location.pathname.split("/");
+  const artistNameIndex = pathParts.indexOf("artist") + 2;
   return decodeURIComponent(pathParts[artistNameIndex]);
-}
-
+};

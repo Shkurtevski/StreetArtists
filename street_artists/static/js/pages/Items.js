@@ -34,9 +34,9 @@ export default class extends AbstractView {
                 Image">
                 <div class="nav-links">
                   <ul>
-                    <li><a href="/artist">Home</a></li>
-                    <li><a href="#">${artistName}</a></li>
-                    <li><a href="/auction">Auction</a></li>
+                    <li><a href="/artist" data-link>Home</a></li>
+                    <li><a href="#" data-link>${artistName}</a></li>
+                    <li><a href="/auction" data-link>Auction</a></li>
                   </ul>
                 </div>
               </div>
@@ -429,7 +429,7 @@ export default class extends AbstractView {
           sendToAuctionBtn.disabled = true;
           publishBtn.disabled = true; // Disable the Publish button
           removeBtn.disabled = true; // Disable the Remove button
-          editBtn.disabled = true; // Disable the Edit button
+          editBtn.disabled = true;
 
           localStorage.setItem(`item_${item.id}_isAuctioning`, "true");
           localStorage.setItem(`item_${item.id}_buttonColor`, "btn-green");
@@ -563,7 +563,7 @@ export default class extends AbstractView {
         }
       });
     };
-
+    console.log(items[11]);
     console.log(items.length);
     renderCard(items);
   }

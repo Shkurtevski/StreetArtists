@@ -73,10 +73,15 @@ export default class extends AbstractView {
     }
     biddingApi();
 
+    // Loop through filteredCard and create card elements
+    
+
+    // Add event listener for the bid button
     bidButton.addEventListener("click", (event) => {
       event.preventDefault();
 
       filteredCard.forEach((item) => {
+        // Modify the item price
         item.price /= 2;
         item.price = Math.floor(item.price);
 
@@ -122,19 +127,20 @@ export default class extends AbstractView {
     };
 
     const filteredCard = items.filter((item) => item.isAuctioning === true);
-
+    console.log(items.filter((item) => item.isAuctioning === true));
     filteredCard.forEach((item) => {
       const card = createCardElement(item);
       card.setAttribute("data-item-id", item.id);
       cardWrapper.append(card);
 
+      // Retrieve stored price from localStorage
       const storedPrice = localStorage.getItem(`price_${item.id}`);
-      if (storedPrice) {
+      if (storedPrice !== null) {
         const priceElement = card.querySelector(".card-span-element");
         priceElement.textContent = `${storedPrice} $`;
+        item.price = parseInt(storedPrice); // Update item price in memory
       }
     });
-
     console.log(filteredCard);
   }
 }
