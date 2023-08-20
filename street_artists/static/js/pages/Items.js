@@ -1,7 +1,6 @@
 import AbstractView from "./AbstractView.js";
 import { items } from "../data/Data.js";
 import { setItems } from "../data/Data.js";
-import { getItems } from "../data/Data.js";
 import { extractArtistNameFromPath } from "../store.js";
 
 export default class extends AbstractView {
@@ -35,8 +34,8 @@ export default class extends AbstractView {
                 <div class="nav-links">
                   <ul>
                     <li><a href="/artist" data-link>Home</a></li>
-                    <li><a href="#" data-link>${artistName}</a></li>
-                    <li><a href="/auction" data-link>Auction</a></li>
+                    <li><a href="/artist/items" data-link>Items</a></li>
+                    <li><a href="/itemauction" data-link>Auction</a></li>
                   </ul>
                 </div>
               </div>
@@ -440,6 +439,8 @@ export default class extends AbstractView {
 
           sendToAuctionBtn.classList.remove("btn-blue");
           sendToAuctionBtn.classList.add("btn-green");
+        }
+        if (item.isAuctioning) {
         }
       });
 

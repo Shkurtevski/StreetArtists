@@ -17,7 +17,7 @@ export default class extends AbstractView {
                 <p>StreetARTists</p></a>
             </div>
             <div class="icon">
-              <a href="/auction" data-link>
+              <a href="/itemauction" data-link>
                 <img src="/static/images/icon.svg" alt="SVG Image" />
               </a>
             </div>

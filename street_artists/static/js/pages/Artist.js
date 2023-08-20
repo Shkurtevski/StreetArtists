@@ -34,7 +34,7 @@ export default class extends AbstractView {
                     <li><a href="/artist/items/${encodeURIComponent(
                       getFromStore("selectedArtistName")
                     )}" data-link>Items</a></li>
-                    <li><a href="/auction">Auction</a></li>
+                    <li><a href="/itemauction" data-link>Auction</a></li>
                   </ul>
                 </div>
               </div>
