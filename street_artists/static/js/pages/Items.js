@@ -449,7 +449,6 @@ export default class extends AbstractView {
           sendToAuctionBtn.classList.add("btn-green");
         } else {
           
-          
           sendToAuctionBtn.textContent = "Send to Auction";
           sendToAuctionBtn.classList.remove("btn-green");
           sendToAuctionBtn.classList.add("btn-blue");

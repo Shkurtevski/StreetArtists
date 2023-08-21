@@ -1,5 +1,6 @@
 import AbstractView from "./AbstractView.js";
 import { items } from "../data/Data.js";
+import { setItems } from "../data/Data.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -68,22 +69,14 @@ export default class extends AbstractView {
 
     if (auctioningItem) {
       console.log("Item in auction found:", auctioningItem.id);
-      items.forEach((item) => {
-        item.isAuctioning = true;
-      });
     } else if (!auctioningItem) {
       items.forEach((item) => {
         item.isAuctioning = false;
       });
-      const noItemInAuctionDiv = document.createElement("div");
-      const noItemInAuctionP = document.createElement("p");
-
-      noItemInAuctionP.textContent = "There is no item in Auction";
-
-      noItemInAuctionDiv.append(noItemInAuctionP);
+      
     }
 
-    let timerValue = localStorage.getItem("timerValue") || 120;
+    let timerValue = +localStorage.getItem("timerValue") || 120;
 
     function updateTimerDisplay() {
       timerParagraph.textContent = formatTime(timerValue);
@@ -102,44 +95,43 @@ export default class extends AbstractView {
       const timerInterval = setInterval(() => {
         timerValue--;
         updateTimerDisplay();
-
+        localStorage.setItem("timerValue", timerValue);
         if (timerValue <= 0) {
           clearInterval(timerInterval);
-          
+          localStorage.removeItem("timerValue");
+
           endAuction();
         } else {
-          updateTimerDisplay(); 
+          updateTimerDisplay();
         }
       }, 100);
     }
 
     function endAuction() {
-  if (auctioningItem) {
-    auctioningItem.isAuctioning = false;
-    auctioningItem.dateSold = new Date().toISOString();
-    auctioningItem.priceSold = auctioningItem.price;
+      if (auctioningItem) {
+        auctioningItem.isAuctioning = false;
+        auctioningItem.dateSold = new Date().toISOString();
+        auctioningItem.priceSold = auctioningItem.price;
 
-    localStorage.setItem("soldItem", JSON.stringify(auctioningItem));
+        localStorage.setItem("soldItem", JSON.stringify(auctioningItem));
 
-    const auctioningItemIndex = items.findIndex(item => item.id === auctioningItem.id);
+        const auctioningItemIndex = items.findIndex(
+          (item) => item.id === auctioningItem.id
+        );
 
-    if (auctioningItemIndex !== -1) {
-      items[auctioningItemIndex] = auctioningItem;
+        if (auctioningItemIndex !== -1) {
+          items[auctioningItemIndex] = auctioningItem;
+        }
+        localStorage.setItem(`item_${auctioningItem.id}_isAuctioning`, "false");
+        auctioningItem = null;
+      }
+
+      setItems(items);
+
+      localStorage.setItem("items", JSON.stringify(items));
+
+      console.log(auctioningItem);
     }
-
-    auctioningItem = null;
-  }
-
-  items.forEach((item) => {
-    item.isAuctioning = false;
-    item.dateSold = new Date().toISOString();
-    item.priceSold = item.price;
-  });
-
-  localStorage.setItem("items", JSON.stringify(items));
-
-  console.log(auctioningItem);
-}
 
     startTimer();
 
@@ -199,6 +191,14 @@ export default class extends AbstractView {
               auctioningItem.priceSold = auctioningItem.price;
               console.log(auctioningItem);
 
+              items.map(item => {
+                if(item.id === auctioningItem.id) {
+                  item.price = auctioningItem.price;
+                  return item
+                } 
+                return item;
+              });
+              setItems(items);
               timerValue += 60;
               updateTimerDisplay();
 
