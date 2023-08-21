@@ -34,7 +34,7 @@ export default class extends AbstractView {
                 <div class="nav-links">
                   <ul>
                     <li><a href="/artist" data-link>Home</a></li>
-                    <li><a href="/artist/items" data-link>Items</a></li>
+                    <li><a href="#" data-link>Items</a></li>
                     <li><a href="/itemauction" data-link>Auction</a></li>
                   </ul>
                 </div>
@@ -351,6 +351,15 @@ export default class extends AbstractView {
       navLinks.classList.toggle("active");
     });
 
+    window.addEventListener("onload", () => {
+      items.forEach(item => {
+        if(item.isAuctioning === true) {
+          item.isAuctioning === false;
+        }
+      });
+
+          });
+
     const createCardElement = (item, cardIndex) => {
       const card = document.createElement("div");
       const img = document.createElement("img");
@@ -412,8 +421,9 @@ export default class extends AbstractView {
       });
 
       sendToAuctionBtn.addEventListener("click", () => {
-        if (!item.isAuctioning) {
+       if (!item.isAuctioning) {
           const auctioningItem = items.find((item) => item.isAuctioning);
+
           if (auctioningItem) {
             console.log("An item is already in auction.");
             console.log(
@@ -426,21 +436,27 @@ export default class extends AbstractView {
           item.isAuctioning = true;
           sendToAuctionBtn.textContent = "Auctioning...";
           sendToAuctionBtn.disabled = true;
-          publishBtn.disabled = true; // Disable the Publish button
-          removeBtn.disabled = true; // Disable the Remove button
+          publishBtn.disabled = true;
+          removeBtn.disabled = true;
           editBtn.disabled = true;
 
           localStorage.setItem(`item_${item.id}_isAuctioning`, "true");
           localStorage.setItem(`item_${item.id}_buttonColor`, "btn-green");
 
-          localStorage.setItem(`item_${item.id}_isAuctioning`, "true");
-
           localStorage.setItem("currentAuctionItemId", item.id);
 
           sendToAuctionBtn.classList.remove("btn-blue");
           sendToAuctionBtn.classList.add("btn-green");
-        }
-        if (item.isAuctioning) {
+        } else {
+          
+          
+          sendToAuctionBtn.textContent = "Send to Auction";
+          sendToAuctionBtn.classList.remove("btn-green");
+          sendToAuctionBtn.classList.add("btn-blue");
+          sendToAuctionBtn.disabled = false;
+          publishBtn.disabled = false;
+          removeBtn.disabled = false;
+          editBtn.disabled = false;
         }
       });
 
@@ -450,25 +466,31 @@ export default class extends AbstractView {
         sendToAuctionBtn.classList.add("btn-green");
       }
 
-      if (localStorage.getItem(`item_${item.id}_isAuctioning`) === "true") {
+      // Check if the item is marked for auctioning in localStorage
+      const isItemAuctioning =
+        localStorage.getItem(`item_${item.id}_isAuctioning`) === "true";
+
+      if (isItemAuctioning) {
         item.isAuctioning = true;
         sendToAuctionBtn.textContent = "Auctioning...";
         sendToAuctionBtn.disabled = true;
         publishBtn.disabled = true;
         removeBtn.disabled = true;
         editBtn.disabled = true;
+      } else {
+        // Reset to default state
+        item.isAuctioning = false;
+        sendToAuctionBtn.textContent = "Send to Auction";
+        sendToAuctionBtn.classList.remove("btn-green");
+        sendToAuctionBtn.classList.add("btn-blue");
+        localStorage.getItem(`item_${item.id}_isAuctioning`) === "false";
       }
 
-      items.forEach((item) => {
-        if (item.isAuctioning) {
-          console.log(`Item ID ${item.id} is in auction.`);
-        }
-      });
-
-      const currentAuctionItemId = localStorage.getItem("currentAuctionItemId");
-      if (currentAuctionItemId && currentAuctionItemId !== item.id) {
-        sendToAuctionBtn.disabled = true;
-      }
+      // // Handle disabling the button for other auctioned items
+      // const currentAuctionItemId = localStorage.getItem("currentAuctionItemId");
+      // if (currentAuctionItemId && currentAuctionItemId !== item.id) {
+      //   sendToAuctionBtn.disabled = true;
+      // }
 
       removeBtn.addEventListener("click", () => {
         const cardIdToRemove = item.id;
@@ -518,16 +540,6 @@ export default class extends AbstractView {
           editedItem.image = itemImageInput.value;
           editedItem.artist = this.artistName;
 
-          if (localStorage.getItem(`item_${item.id}_isAuctioning`) === "true") {
-            sendToAuctionBtn.textContent = "Auctioning...";
-            sendToAuctionBtn.classList.remove("btn-blue");
-            sendToAuctionBtn.classList.add("btn-green");
-          } else {
-            sendToAuctionBtn.textContent = "Send to Auction";
-            sendToAuctionBtn.classList.remove("btn-green");
-            sendToAuctionBtn.classList.add("btn-blue");
-          }
-
           setItems(items);
 
           const updatedCard = createCardElement(editedItem, editedItemIndex);
@@ -548,6 +560,8 @@ export default class extends AbstractView {
       return card;
     };
 
+    console.log(items[11]);
+
     cancelBtn.addEventListener("click", (event) => {
       editWindow.classList.remove("is-active");
     });
@@ -564,8 +578,7 @@ export default class extends AbstractView {
         }
       });
     };
-    console.log(items[11]);
-    console.log(items.length);
+
     renderCard(items);
   }
 }

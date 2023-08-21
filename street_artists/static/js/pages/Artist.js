@@ -30,7 +30,7 @@ export default class extends AbstractView {
                 Image">
                 <div class="nav-links">
                   <ul>
-                    <li><a href="/artist">Home</a></li>
+                    <li><a href="/artist" data-link>Home</a></li>
                     <li><a href="/artist/items/${encodeURIComponent(
                       getFromStore("selectedArtistName")
                     )}" data-link>Items</a></li>
@@ -63,11 +63,12 @@ export default class extends AbstractView {
           </div>
           <div class="chart-content-wrapper">
             <div class="chart-content">
-              <p>Display my income for last</p>
+              <p>Display my income for all time</p>
               <div class="chart-buttons-wrapper">
                 <button id="btn-7" class="btn btn-dark">7 days</button>
                 <button id="btn-14" class="btn btn-dark">14 days</button>
                 <button id="btn-30" class="btn btn-dark">30 days</button>
+                <button id="btn-all-time" class="btn btn-dark">All time</button>
               </div>
             </div>
             <div class="chart-container">
@@ -82,14 +83,35 @@ export default class extends AbstractView {
   onMount() {
     const artistName = getFromStore("selectedArtistName");
     const itemsByArtist = extractDataForArtists(artistName);
+    const itemAuction = document.querySelector(".item-auction");
+
+    function findItemByAuctionStatus(auctioningStatus) {
+      return items.find((item) => {
+        return (
+          localStorage.getItem(`item_${item.id}_isAuctioning`) ===
+          auctioningStatus.toString()
+        );
+      });
+    }
+
+    let auctioningItem = findItemByAuctionStatus(true);
+
+    if (auctioningItem) {
+      console.log(auctioningItem);
+
+      itemAuction.textContent = auctioningItem.price;
+
+      console.log(items);
+    }
 
     const buttons = [
       document.querySelector("#btn-7"),
       document.querySelector("#btn-14"),
       document.querySelector("#btn-30"),
+      document.querySelector("#btn-all-time")
     ];
 
-    buttons[1].classList.add("btn-active-contrast");
+    buttons[3].classList.add("btn-active-contrast");
 
     buttons.forEach((button, index) => {
       button.addEventListener("click", () => {
@@ -125,10 +147,10 @@ export default class extends AbstractView {
       itemsSoldPara.textContent = `${totalSoldItems}/${itemsByArtist.length}`;
       itemsIncome.textContent = `$${accumulatedMoney}`;
 
-      generateChart(artistName, dateCreated, priceSold, totalSoldItems);
+      generateChart(priceSold, totalSoldItems);
     }
 
-    function generateChart(artistName, dateCreated, priceSold, totalSoldItems) {
+    function generateChart(priceSold, totalSoldItems) {
       const ctx = document.getElementById("myChart").getContext("2d");
       const soldItems = Array.from({ length: totalSoldItems }, (_, i) => i + 1);
 
@@ -165,7 +187,6 @@ export default class extends AbstractView {
       });
     }
 
-    
     updateUI(artistName, itemsByArtist);
   }
 }

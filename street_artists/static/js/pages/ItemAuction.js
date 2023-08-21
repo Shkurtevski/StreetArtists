@@ -44,6 +44,11 @@ export default class extends AbstractView {
   onMount() {
     const cardWrapper = document.querySelector(".card-wrapper");
     const bidButton = document.querySelector("#btn-bid");
+    let auctionTimer = document.querySelector(".timer");
+    const itemSold = document.querySelector(".item-sold");
+
+    let timerParagraph = document.createElement("p");
+    auctionTimer.append(timerParagraph);
 
     function updateCardElementPrice(card, price) {
       const priceElement = card.querySelector(".card-span-element");
@@ -59,7 +64,7 @@ export default class extends AbstractView {
       });
     }
 
-    const auctioningItem = findItemByAuctionStatus(true);
+    let auctioningItem = findItemByAuctionStatus(true);
 
     if (auctioningItem) {
       console.log("Item in auction found:", auctioningItem.id);
@@ -70,7 +75,73 @@ export default class extends AbstractView {
       items.forEach((item) => {
         item.isAuctioning = false;
       });
+      const noItemInAuctionDiv = document.createElement("div");
+      const noItemInAuctionP = document.createElement("p");
+
+      noItemInAuctionP.textContent = "There is no item in Auction";
+
+      noItemInAuctionDiv.append(noItemInAuctionP);
     }
+
+    let timerValue = localStorage.getItem("timerValue") || 120;
+
+    function updateTimerDisplay() {
+      timerParagraph.textContent = formatTime(timerValue);
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      return `${minutes}:${
+        remainingSeconds < 10 ? "0" : ""
+      }${remainingSeconds}`;
+    }
+
+    function startTimer() {
+      updateTimerDisplay();
+      const timerInterval = setInterval(() => {
+        timerValue--;
+        updateTimerDisplay();
+
+        if (timerValue <= 0) {
+          clearInterval(timerInterval);
+          
+          endAuction();
+        } else {
+          updateTimerDisplay(); 
+        }
+      }, 100);
+    }
+
+    function endAuction() {
+  if (auctioningItem) {
+    auctioningItem.isAuctioning = false;
+    auctioningItem.dateSold = new Date().toISOString();
+    auctioningItem.priceSold = auctioningItem.price;
+
+    localStorage.setItem("soldItem", JSON.stringify(auctioningItem));
+
+    const auctioningItemIndex = items.findIndex(item => item.id === auctioningItem.id);
+
+    if (auctioningItemIndex !== -1) {
+      items[auctioningItemIndex] = auctioningItem;
+    }
+
+    auctioningItem = null;
+  }
+
+  items.forEach((item) => {
+    item.isAuctioning = false;
+    item.dateSold = new Date().toISOString();
+    item.priceSold = item.price;
+  });
+
+  localStorage.setItem("items", JSON.stringify(items));
+
+  console.log(auctioningItem);
+}
+
+    startTimer();
 
     if (auctioningItem) {
       console.log("Item in auction found:", auctioningItem.id);
@@ -120,19 +191,22 @@ export default class extends AbstractView {
         if (auctioningItem && auctioningItem.isAuctioning) {
           const apiData = await biddingAPIAsync(auctioningItem);
 
-          if (apiData) {
-            auctioningItem.price += apiData.bidAmount;
-            auctioningItem.priceSold = auctioningItem.price; // Update priceSold
+          if (apiData.isBidding) {
+            const bidAmount = parseFloat(apiData.bidAmount);
 
-            console.log("Updated price:", auctioningItem.price);
+            if (!isNaN(bidAmount)) {
+              auctioningItem.price += bidAmount;
+              auctioningItem.priceSold = auctioningItem.price;
+              console.log(auctioningItem);
 
-            updateCardElementPrice(auctioningItem.card, auctioningItem.price);
+              timerValue += 60;
+              updateTimerDisplay();
 
-            // Update the card data in local storage
-            localStorage.setItem(
-              `item_${auctioningItem.id}`,
-              JSON.stringify(auctioningItem)
-            );
+              console.log("Updated price:", auctioningItem.price);
+              updateCardElementPrice(auctioningItem.card, auctioningItem.price);
+            } else {
+              console.error("Invalid bid amount:", apiData.bidAmount);
+            }
           }
         } else {
           console.log("Item is not in auction.");
@@ -164,5 +238,6 @@ export default class extends AbstractView {
         throw error;
       }
     }
+    console.log(items); // Updated items array after auction
   }
 }

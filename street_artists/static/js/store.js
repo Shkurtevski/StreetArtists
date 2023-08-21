@@ -1,3 +1,5 @@
+import { items } from "./data/Data.js";
+
 export const store = {};
 
 export function setToStore(key, value) {

@@ -95,7 +95,7 @@ Follow the design provided in the [Figma project](https://www.figma.com/file/4Ds
 
 1. Clone the repository:
    ```sh
-   git clone <https://github.com/Shkurtevski/StreetArtists.git>
+   git clone https://github.com/Shkurtevski/StreetArtists.git
 
 ## Usage
 
