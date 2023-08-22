@@ -9,7 +9,7 @@
       @extend %section;
       display: flex;
       width: calc(250px * 18);
-      animation: scrollLeft 40s linear infinite;
+      animation: scrollLeft 100s linear infinite;
       flex-direction: row-reverse;
       &:hover {
         animation-play-state: paused;
@@ -29,7 +29,7 @@
     .slider-two {
       display: flex;
       width: calc(250px * 18);
-      animation: scrollRight 40s linear infinite;
+      animation: scrollRight 100s linear infinite;
       padding-bottom: var.$gutter-base;
       &:hover {
         animation-play-state: paused;

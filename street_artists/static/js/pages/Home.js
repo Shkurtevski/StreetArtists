@@ -50,13 +50,11 @@ export default class extends AbstractView {
 
   onMount() {
     const select = document.querySelector("#select-option-home-section");
-    
-    select.addEventListener("change", (event) => {
-    setToStore("selectedArtistName", event.target.value);
-      navigateTo("/artist"); 
-    });
 
-    console.log("test");
+    select.addEventListener("change", (event) => {
+      setToStore("selectedArtistName", event.target.value);
+      navigateTo("/artist");
+    });
 
     function renderSelectOptions(data) {
       const defaultOption = renderDefaultOption();

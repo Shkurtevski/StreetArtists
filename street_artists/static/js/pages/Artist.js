@@ -12,7 +12,6 @@ export default class extends AbstractView {
   async getHtml() {
     this.items = items;
     const artistName = getFromStore("selectedArtistName");
-    console.log(artistName);
 
     return `
       <div id="artist">
@@ -85,30 +84,28 @@ export default class extends AbstractView {
     const itemsByArtist = extractDataForArtists(artistName);
     const itemAuction = document.querySelector(".item-auction");
 
-    function findItemByAuctionStatus(auctioningStatus) {
+    function findItemByAuctionStatusAndArtist(auctioningStatus, artistName) {
       return items.find((item) => {
         return (
           localStorage.getItem(`item_${item.id}_isAuctioning`) ===
-          auctioningStatus.toString()
+            auctioningStatus.toString() && item.artist === artistName
         );
       });
     }
 
-    let auctioningItem = findItemByAuctionStatus(true);
+    let auctioningItem = findItemByAuctionStatusAndArtist(true, artistName);
 
     if (auctioningItem) {
-      console.log(auctioningItem);
-
-      itemAuction.textContent = auctioningItem.price;
-
-      console.log(items);
+      itemAuction.textContent = `$${auctioningItem.price}`;
+    } else {
+      itemAuction.textContent = "";
     }
 
     const buttons = [
       document.querySelector("#btn-7"),
       document.querySelector("#btn-14"),
       document.querySelector("#btn-30"),
-      document.querySelector("#btn-all-time")
+      document.querySelector("#btn-all-time"),
     ];
 
     buttons[3].classList.add("btn-active-contrast");

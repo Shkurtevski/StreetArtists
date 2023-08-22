@@ -9,8 +9,6 @@ export default class extends AbstractView {
     this.items = [];
     this.setTitle("Items");
     this.artistName = decodeURIComponent(extractArtistNameFromPath());
-    console.log("Received artist name:", this.artistName);
-    console.log("Received params:", params);
   }
 
   async getHtml() {
@@ -35,7 +33,7 @@ export default class extends AbstractView {
                   <ul>
                     <li><a href="/artist" data-link>Home</a></li>
                     <li><a href="#" data-link>Items</a></li>
-                    <li><a href="/itemauction" data-link>Auction</a></li>
+                    <li><a href="/itemauction" id="auction-link" data-link>Auction</a></li>
                   </ul>
                 </div>
               </div>
@@ -159,7 +157,6 @@ export default class extends AbstractView {
 
   onMount() {
     this.artistName = decodeURIComponent(extractArtistNameFromPath());
-    console.log("Artist name in onMount:", this.artistName);
 
     const hamburger = document.querySelector(".hamburger-bars");
     const navLinks = document.querySelector(".nav-links");
@@ -338,13 +335,11 @@ export default class extends AbstractView {
 
       cameraPopup.style.display = "none";
       addNewItemWindow.classList.remove("is-active");
-      console.log("New Item:", newItem);
       location.reload();
     });
 
     addNewItemSquare.addEventListener("click", () => {
       addNewItemWindow.classList.toggle("is-active");
-      console.log("clicked");
     });
 
     hamburger.addEventListener("click", () => {
@@ -352,13 +347,12 @@ export default class extends AbstractView {
     });
 
     window.addEventListener("onload", () => {
-      items.forEach(item => {
-        if(item.isAuctioning === true) {
+      items.forEach((item) => {
+        if (item.isAuctioning === true) {
           item.isAuctioning === false;
         }
       });
-
-          });
+    });
 
     const createCardElement = (item, cardIndex) => {
       const card = document.createElement("div");
@@ -421,7 +415,7 @@ export default class extends AbstractView {
       });
 
       sendToAuctionBtn.addEventListener("click", () => {
-       if (!item.isAuctioning) {
+        if (!item.isAuctioning) {
           const auctioningItem = items.find((item) => item.isAuctioning);
 
           if (auctioningItem) {
@@ -448,7 +442,6 @@ export default class extends AbstractView {
           sendToAuctionBtn.classList.remove("btn-blue");
           sendToAuctionBtn.classList.add("btn-green");
         } else {
-          
           sendToAuctionBtn.textContent = "Send to Auction";
           sendToAuctionBtn.classList.remove("btn-green");
           sendToAuctionBtn.classList.add("btn-blue");
@@ -497,9 +490,6 @@ export default class extends AbstractView {
         const updatedItems = items.filter((item) => item.id !== cardIdToRemove);
         setItems(updatedItems);
         card.remove();
-        console.log(updatedItems);
-
-        console.log(items);
       });
 
       editBtn.addEventListener("click", () => {
@@ -517,7 +507,6 @@ export default class extends AbstractView {
 
         saveBtn.dataset.itemIndex = cardIndex;
 
-        console.log("Editing item at index:", cardIndex);
         editWindow.classList.add("is-active");
       });
 
@@ -544,9 +533,6 @@ export default class extends AbstractView {
           const updatedCard = createCardElement(editedItem, editedItemIndex);
           const existingCard = cardWrapper.children[editedItemIndex];
 
-          console.log("Updating card for item at index:", editedItemIndex);
-          console.log("Existing card:", existingCard);
-
           if (Node.prototype.isPrototypeOf(existingCard)) {
             cardWrapper.replaceChild(updatedCard, existingCard);
             editWindow.classList.remove("is-active");
@@ -558,8 +544,6 @@ export default class extends AbstractView {
 
       return card;
     };
-
-    console.log(items[11]);
 
     cancelBtn.addEventListener("click", (event) => {
       editWindow.classList.remove("is-active");

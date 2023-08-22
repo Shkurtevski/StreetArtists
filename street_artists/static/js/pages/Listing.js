@@ -124,14 +124,12 @@ export default class extends AbstractView {
     });
 
     filterIcon.addEventListener("click", () => {
-      console.log("Filter icon clicked");
       filterWindow.classList.toggle("is-active");
       checkIcon.style.display = "block";
       xIcon.style.display = "block";
     });
 
     xIcon.addEventListener("click", () => {
-      console.log("X icon clicked");
       filterWindow.classList.remove("is-active");
       checkIcon.style.display = "none";
       xIcon.style.display = "none";

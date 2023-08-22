@@ -49,6 +49,12 @@
             text-transform: capitalize;
             padding-bottom: 0.5rem;
           }
+          .item-auction {
+            font-size: var.$font-size-small;
+          }
+          p {
+            padding-bottom: 0.5rem;
+          }
         }
       }
     }

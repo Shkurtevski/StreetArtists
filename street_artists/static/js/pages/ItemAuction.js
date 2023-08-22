@@ -34,8 +34,10 @@ export default class extends AbstractView {
         </div>
         <div class="live-auction">
           <div class="live-auction-inner">
+            <div class="no-item-in-auction">
+              <p class="no-item-paragraph">No item in Auction found!</p>
+            </div>
             <div class="timer"></div>
-            <div class="item-sold"></div>
             <button id="btn-bid" class="btn btn-active-contrast">Bid</button>
           </div>
         </div>
@@ -46,7 +48,7 @@ export default class extends AbstractView {
     const cardWrapper = document.querySelector(".card-wrapper");
     const bidButton = document.querySelector("#btn-bid");
     let auctionTimer = document.querySelector(".timer");
-    const itemSold = document.querySelector(".item-sold");
+    const noItemInAuctionDiv = document.querySelector(".no-item-in-auction");
 
     let timerParagraph = document.createElement("p");
     auctionTimer.append(timerParagraph);
@@ -66,15 +68,6 @@ export default class extends AbstractView {
     }
 
     let auctioningItem = findItemByAuctionStatus(true);
-
-    if (auctioningItem) {
-      console.log("Item in auction found:", auctioningItem.id);
-    } else if (!auctioningItem) {
-      items.forEach((item) => {
-        item.isAuctioning = false;
-      });
-      
-    }
 
     let timerValue = +localStorage.getItem("timerValue") || 120;
 
@@ -104,7 +97,7 @@ export default class extends AbstractView {
         } else {
           updateTimerDisplay();
         }
-      }, 100);
+      }, 1000);
     }
 
     function endAuction() {
@@ -129,15 +122,16 @@ export default class extends AbstractView {
       setItems(items);
 
       localStorage.setItem("items", JSON.stringify(items));
-
-      console.log(auctioningItem);
     }
 
-    startTimer();
+    if (auctioningItem) {
+      noItemInAuctionDiv.style.display = "none";
+      startTimer();
+    } else {
+      noItemInAuctionDiv.style.display = "flex";
+    }
 
     if (auctioningItem) {
-      console.log("Item in auction found:", auctioningItem.id);
-
       const card = document.createElement("div");
       card.className = "card";
 
@@ -177,8 +171,6 @@ export default class extends AbstractView {
 
     bidButton.addEventListener("click", async (event) => {
       event.preventDefault();
-      console.log("Bid button clicked");
-
       try {
         if (auctioningItem && auctioningItem.isAuctioning) {
           const apiData = await biddingAPIAsync(auctioningItem);
@@ -189,20 +181,18 @@ export default class extends AbstractView {
             if (!isNaN(bidAmount)) {
               auctioningItem.price += bidAmount;
               auctioningItem.priceSold = auctioningItem.price;
-              console.log(auctioningItem);
 
-              items.map(item => {
-                if(item.id === auctioningItem.id) {
+              items.map((item) => {
+                if (item.id === auctioningItem.id) {
                   item.price = auctioningItem.price;
-                  return item
-                } 
+                  return item;
+                }
                 return item;
               });
               setItems(items);
               timerValue += 60;
               updateTimerDisplay();
 
-              console.log("Updated price:", auctioningItem.price);
               updateCardElementPrice(auctioningItem.card, auctioningItem.price);
             } else {
               console.error("Invalid bid amount:", apiData.bidAmount);
@@ -219,7 +209,6 @@ export default class extends AbstractView {
     async function biddingAPIAsync(item) {
       const formData = new FormData();
       formData.set("amount", 50);
-
       try {
         const rawData = await fetch(
           "https://projects.brainster.tech/bidding/api",
@@ -228,9 +217,7 @@ export default class extends AbstractView {
             body: formData,
           }
         );
-
         const data = await rawData.json();
-        console.log(data);
 
         return data;
       } catch (error) {
@@ -238,6 +225,5 @@ export default class extends AbstractView {
         throw error;
       }
     }
-    console.log(items); // Updated items array after auction
   }
 }
