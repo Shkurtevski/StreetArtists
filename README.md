@@ -2,6 +2,8 @@
 
 # Street ARTists Platform
 
+<img src="./street_artists/static/images/street-artists.png">
+
 Welcome to the Street ARTists Platform, a web space for street artists to track their income and showcase their masterpieces. This project aims to solve the problem of traditional income tracking methods and provide a platform for artists to display their work professionally.
 
 ## Table of Contents
@@ -96,10 +98,12 @@ Follow the design provided in the [Figma project](https://www.figma.com/file/4Ds
 1. Clone the repository:
    ```sh
    git clone https://github.com/Shkurtevski/StreetArtists.git
+   ```
 
 ## Usage
 
 1. Start the development server using the following command:
+
 - npm run start
 
 2. Open your web browser and visit http://localhost:3000 to access the Street ARTists Platform.
