@@ -8,7 +8,6 @@ Welcome to the Street ARTists Platform, a web space for street artists to track 
 
 ## Table of Contents
 
-
 - [Project Overview](#project-overview)
 - [Features](#features)
 - - [Income Tracking](#income-tracking)
