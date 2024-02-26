@@ -2,7 +2,6 @@
 
 # Street ARTists Platform
 
-
 <img src="./street_artists/static/images/street-artists.png">
 
 Welcome to the Street ARTists Platform, a web space for street artists to track their income and showcase their masterpieces. This project aims to solve the problem of traditional income tracking methods and provide a platform for artists to display their work professionally.
